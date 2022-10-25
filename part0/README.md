@@ -1,0 +1,1 @@
+These are the exercise for Part 0 of the Full Stack Open course.
