@@ -1,6 +1,34 @@
-import Header from './Header'
-import Content from './Content'
-import Total from './Total'
+const Header = (header) => {
+  return (
+    <h1>{header.course}</h1>
+  )
+}
+
+const Part = (content) => {
+  return (
+    <p>
+      {content.part} {content.exercises}
+    </p>
+  )
+}
+
+const Content = (content) => {
+  return (
+    <div>
+      <Part part={content.parts[0].name} exercises={content.parts[0].exercises} />
+      <Part part={content.parts[1].name} exercises={content.parts[1].exercises} />
+      <Part part={content.parts[2].name} exercises={content.parts[2].exercises} />
+    </div>
+  )
+}
+
+const Total = (total) => { 
+  let numberOfExercises = 0;
+  total.parts.forEach((part) => numberOfExercises += part.exercises)
+  return (
+    <p>Number of exercises {numberOfExercises}</p>
+  )
+}
 
 const App = () => {
   const course = {
@@ -20,13 +48,13 @@ const App = () => {
       },
     ],
   };
-return (
-  <div>
-    <Header course={course.name}/>``
-    <Content parts={course.parts}  />
-    <Total numberOfExercises={course.parts} />
-  </div>
-);
+  return (
+    <div>
+      <Header course={course.name} />
+      <Content parts={course.parts} />
+      <Total parts={course.parts} />
+    </div>
+  );
 };
 
 export default App
