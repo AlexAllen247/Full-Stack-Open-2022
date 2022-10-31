@@ -1,21 +1,37 @@
+import { useState } from "react"
 import Country from "./Country"
 
-const Countries = ({ countries }) => {
-    if (countries.length === 1) {
+const Countries = ({ countriesSearch }) => {
+    const [display, setDisplay] = useState("")
+
+    if (countriesSearch.length === 1) {
         return (
-            <Country country={countries[0]} />
+            <Country country={countriesSearch[0]} />
         )
-    } else if (countries.length <= 10) {
+    } else if (countriesSearch.length <= 10) {
         return (
             <div>
-                {countries.map((country) => <p key={country.name.official}>{country.name.common}</p>)}
+                <ul>
+                    {Object.values(countriesSearch).map((country) => {
+                        return (
+                            <li key={country.name.official}>{country.name.common}
+                                <button onClick={() => setDisplay(country)}>Show</button>
+                            </li>
+                        )
+                    })}
+                </ul>
+                {display ? <Country country={display} /> : null}
             </div>
         )
-    } else {
+    } else if (countriesSearch.length > 10) {
         return (
-            <p>Too many matches, specify another filter</p>
+            <div>
+                <p>Too many matches, specify another filter</p>
+            </div>
         )
     }
 }
+
+
 
 export default Countries

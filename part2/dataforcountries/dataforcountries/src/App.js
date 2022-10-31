@@ -6,14 +6,14 @@ import Filter from "./components/Filter"
 function App() {
   const [search, setSearch] = useState("")
   const [countries, setCountries] = useState([])
-  const [countrySearch, setCountrySearch] = useState([])
+  const [countriesSearch, setcountriesSearch] = useState([])
 
   const hook = () => {
     axios
-    .get("https://restcountries.com/v3.1/all")
-    .then(response => {
-      setCountries(response.data)
-    })
+      .get("https://restcountries.com/v3.1/all")
+      .then((response) => {
+        setCountries(response.data)
+      })
   }
 
   useEffect(hook, [])
@@ -21,15 +21,17 @@ function App() {
   const handleFilter = (event) => {
     const query = event.target.value
     setSearch(query)
-    setCountrySearch(countries.filter((country) => {
-      country.name.common.toLowerCase().includes(query.toLowerCase())
+    setcountriesSearch(countries.filter((country) => {
+      return (
+        country.name.common.toLowerCase().includes(query.toLowerCase())
+      )
     }))
   }
 
   return (
     <div>
       <Filter value={search} onChange={handleFilter} />
-      <Countries countries={countrySearch} />
+      <Countries countriesSearch={countriesSearch} />
     </div>
   )
 }

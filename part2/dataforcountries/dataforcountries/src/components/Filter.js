@@ -1,7 +1,7 @@
-const Filter = ({ onChange, value }) => {
+const Filter = ({ value, onChange }) => {
     return (
         <div>
-            <p>find countries<input onChange={onChange} value={value} /></p>
+            <p>Find Countries: <input value={value} onChange={onChange} /></p>
         </div>
     )
 }
