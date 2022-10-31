@@ -3,7 +3,7 @@ import Persons from "./components/Persons"
 import Filter from "./components/Filter"
 import PersonForm from "./components/PersonForm"
 import Header from "./components/Header"
-import axios from "axios"
+import contactService from "./services/Contacts"
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -13,11 +13,11 @@ const App = () => {
   const [personSearch, setPersonSearch] = useState([])
 
   const hook = () => {
-    axios
-      .get("http://localhost:3001/persons")
-      .then(response => {
-        setPersons(response.data)
-        setPersonSearch(response.data)
+    contactService
+      .getAll()
+      .then((initialContact) => {
+        setPersons(initialContact)
+        setPersonSearch(initialContact)
       })
   }
 
@@ -29,13 +29,43 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    if (persons.find((person) => person.name === contactObject.name)) {
-      alert(`${newName} is already in phonebook`)
+    const findPerson = persons.find((person) => { return (person.name === contactObject.name) })
+
+    if (findPerson && findPerson.number === newNumber) {
+      alert(contactObject)
+    } else if (findPerson && findPerson.number !== newNumber) {
+      const confirmNumber = window.confirm(`${newName} is already added to the phonebook, do you want to replace the old number with a new one?`)
+      if (confirmNumber) {
+        const contactUpdate = { ...findPerson, number: newNumber }
+        contactService
+          .update(findPerson.id, contactUpdate)
+          .then((returnedContact) => {
+            setPersons(persons.map((person) => {
+              return (person.id !== findPerson.id ? person : returnedContact)
+            }))
+          })
+      }
     } else {
-      setPersons(persons.concat(contactObject))
-      setPersonSearch(persons.concat(contactObject))
-      setNewName("")
-      setNewNumber("")
+      contactService
+        .create(contactObject)
+        .then((returnedContact) => {
+          setPersons(persons.concat(returnedContact))
+          setPersonSearch(persons.concat(returnedContact))
+          setNewName("")
+          setNewNumber("")
+        })
+    }
+  }
+
+  const deleteContact = (id, name) => {
+    if (window.confirm(`Do you want to delete ${name}?`)) {
+      contactService
+        .remove(id)
+        .then((response) => {
+          persons.filter((person) => person.id !== id)
+          setPersons(response.data)
+          setPersonSearch(response.data)
+        })
     }
   }
 
@@ -58,7 +88,7 @@ const App = () => {
       <Filter search={search} handleSearch={handleSearch} />
       <PersonForm addContact={addContact} newName={newName} newNumber={newNumber} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} />
       <Header header="Numbers" />
-      <Persons personSearch={personSearch} />
+      <Persons personSearch={personSearch} deletePerson={deleteContact} />
     </div>
   )
 }

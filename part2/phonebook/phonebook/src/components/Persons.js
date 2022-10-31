@@ -1,11 +1,11 @@
 import Person from "./Person"
 
-const Persons = ({ personSearch }) => {
+const Persons = ({ personSearch, deletePerson }) => {
     return (
         <div>
             <ul>
-                {personSearch.map((person) => (
-                    <Person key={person.name} person={person} />
+                {Object.values(personSearch).map((person) => (
+                    <Person key={person.name} person={person} deletePerson={deletePerson}/>
                 ))}
             </ul>
         </div>
