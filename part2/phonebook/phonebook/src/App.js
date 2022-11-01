@@ -4,6 +4,7 @@ import Filter from "./components/Filter"
 import PersonForm from "./components/PersonForm"
 import Header from "./components/Header"
 import contactService from "./services/Contacts"
+import Notification from "./components/Notification"
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -11,6 +12,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("")
   const [search, setSearch] = useState("")
   const [personSearch, setPersonSearch] = useState([])
+  const [message, setMessage] = useState(null)
 
   const hook = () => {
     contactService
@@ -22,6 +24,12 @@ const App = () => {
   }
 
   useEffect(hook, [])
+
+  useEffect(() => {
+    setTimeout(() => {
+      setMessage(null)
+    }, 5000)
+  }, [message])
 
   const addContact = (event) => {
     event.preventDefault()
@@ -40,9 +48,15 @@ const App = () => {
         contactService
           .update(findPerson.id, contactUpdate)
           .then((returnedContact) => {
-            setPersons(persons.map((person) => {
+            const updatedPersonList = persons.map((person) => {
               return (person.id !== findPerson.id ? person : returnedContact)
-            }))
+            })
+            setPersons(updatedPersonList)
+            setPersonSearch(updatedPersonList)
+            setMessage(`Updated ${contactObject.name}`)
+          })
+          .catch((error) => {
+            setMessage(`Information of ${contactObject.name} has already been removed from the server`)
           })
       }
     } else {
@@ -53,6 +67,7 @@ const App = () => {
           setPersonSearch(persons.concat(returnedContact))
           setNewName("")
           setNewNumber("")
+          setMessage(`Added ${contactObject.name}`)
         })
     }
   }
@@ -62,9 +77,9 @@ const App = () => {
       contactService
         .remove(id)
         .then((response) => {
-          persons.filter((person) => person.id !== id)
-          setPersons(response.data)
-          setPersonSearch(response.data)
+          const updatedList = persons.filter((person) => person.id !== id)
+          setPersons(updatedList)
+          setPersonSearch(updatedList)
         })
     }
   }
@@ -85,6 +100,7 @@ const App = () => {
   return (
     <div>
       <Header header="Phonebook" />
+      <Notification message={message} />
       <Filter search={search} handleSearch={handleSearch} />
       <PersonForm addContact={addContact} newName={newName} newNumber={newNumber} handleNameChange={handleNameChange} handleNumberChange={handleNumberChange} />
       <Header header="Numbers" />
