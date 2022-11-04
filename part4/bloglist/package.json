@@ -1,0 +1,32 @@
+{
+  "name": "bloglist",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "y"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexAllen247/Full-Stack-Open-2022.git"
+  },
+  "author": "AlexAllen247",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlexAllen247/Full-Stack-Open-2022/issues"
+  },
+  "homepage": "https://github.com/AlexAllen247/Full-Stack-Open-2022#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "eslint": "^8.26.0",
+    "express": "^4.18.2",
+    "lint": "^1.1.2",
+    "mongoose": "^6.7.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
