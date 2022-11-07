@@ -2,8 +2,29 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    "title": "cool",
-    "author": "alex",
+    "title": "Cool",
+    "author": "Paul",
     "url": "www.example.com",
     "likes": 2
+}
+
+###
+
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "Uncool",
+    "author": "Alex",
+    "url": "www.example.com",
+    "likes": 4
+}
+
+###
+
+PUT http://localhost:3003/api/blogs/6368e205b6de68db9b82f47c
+Content-Type: application/json
+
+{
+    "likes": 7
 }
