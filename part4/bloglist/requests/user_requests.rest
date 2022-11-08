@@ -1,0 +1,73 @@
+GET http://localhost:3003/api/blogs
+
+###
+
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "Peter",
+    "name": "Peter",
+    "password": "password"
+}
+
+###
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+    "username": "Peter",
+    "password": "password"
+}
+
+###
+
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlBldGVyIiwiaWQiOiI2MzZhMzkyOThkYWQ3NDMzNjk3OGMxYzciLCJpYXQiOjE2Njc5MDgzOTJ9.mdAOrNNiRzYXKnRZ_7DTmarJiHD2OEnhZoi-EYaPLxc
+
+{
+    "title": "Cool",
+    "author": "Paul",
+    "url": "www.example.com",
+    "likes": 2,
+    "user": "636a39298dad74336978c1c7"
+}
+
+###
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+    "username": "Alex",
+    "name": "Alex",
+    "password": "password"
+}
+
+###
+POST http://localhost:3003/api/login
+Content-Type: application/json
+
+{
+    "username": "Alex",
+    "password": "password"
+}
+
+###
+
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFsZXgiLCJpZCI6IjYzNmE0M2I3YzU5Mzc0MWU0OGQ1OTMwNSIsImlhdCI6MTY2NzkwODU3NX0.ciFeAuvuLBHkAJGHaCpTxlcRhyJ74jMQ_22X78XhUqc
+Accept: application/json
+
+{
+    "title": "What",
+    "author": "Oscar",
+    "url": "www.example.com",
+    "likes": 5,
+    "user": "636a43b7c593741e48d59305"
+}
+
+###
+DELETE http://localhost:3003/api/blogs/636a3b7c8dad74336978c1ce
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlBldGVyIiwiaWQiOiI2MzZhMzkyOThkYWQ3NDMzNjk3OGMxYzciLCJpYXQiOjE2Njc5MDk0MTJ9.IlUBUkWLonVhtFw63yxX8dogqKjAaiGHkHLTwJGsXTA
