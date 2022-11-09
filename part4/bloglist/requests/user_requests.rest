@@ -1,4 +1,5 @@
 GET http://localhost:3003/api/blogs
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlBldGVyIiwiaWQiOiI2MzZhMzkyOThkYWQ3NDMzNjk3OGMxYzciLCJpYXQiOjE2Njc5ODUxNzV9.tcs_ribo9gowUxZI1h80WxTgrpIqjQ4wT1VgbN2UWOc
 
 ###
 
@@ -24,14 +25,14 @@ Content-Type: application/json
 
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlBldGVyIiwiaWQiOiI2MzZhMzkyOThkYWQ3NDMzNjk3OGMxYzciLCJpYXQiOjE2Njc5MDgzOTJ9.mdAOrNNiRzYXKnRZ_7DTmarJiHD2OEnhZoi-EYaPLxc
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFsZXgiLCJpZCI6IjYzNmE0M2I3YzU5Mzc0MWU0OGQ1OTMwNSIsImlhdCI6MTY2Nzk4Nzc0NH0.HzPv_JcFkfgWbYkSRZZROXFpYmKUBtbYtBIHPZZZV9k
 
 {
-    "title": "Cool",
+    "title": "Wow",
     "author": "Paul",
     "url": "www.example.com",
-    "likes": 2,
-    "user": "636a39298dad74336978c1c7"
+    "likes": 7,
+    "user": "636a43b7c593741e48d59305"
 }
 
 ###
@@ -57,7 +58,7 @@ Content-Type: application/json
 
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFsZXgiLCJpZCI6IjYzNmE0M2I3YzU5Mzc0MWU0OGQ1OTMwNSIsImlhdCI6MTY2NzkwODU3NX0.ciFeAuvuLBHkAJGHaCpTxlcRhyJ74jMQ_22X78XhUqc
+Authorization: bearer Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFsZXgiLCJpZCI6IjYzNmE0M2I3YzU5Mzc0MWU0OGQ1OTMwNSIsImlhdCI6MTY2Nzk4Njc2N30.7adLl2x-tNGQ-g_NyTCqRbOwf3ZJtF2aLjX5ZuYq3fg
 Accept: application/json
 
 {
@@ -69,5 +70,15 @@ Accept: application/json
 }
 
 ###
-DELETE http://localhost:3003/api/blogs/636a3b7c8dad74336978c1ce
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlBldGVyIiwiaWQiOiI2MzZhMzkyOThkYWQ3NDMzNjk3OGMxYzciLCJpYXQiOjE2Njc5MDk0MTJ9.IlUBUkWLonVhtFw63yxX8dogqKjAaiGHkHLTwJGsXTA
+DELETE http://localhost:3003/api/blogs/636b797fc7ff6da1eeebfdd6
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFsZXgiLCJpZCI6IjYzNmE0M2I3YzU5Mzc0MWU0OGQ1OTMwNSIsImlhdCI6MTY2Nzk5NDE0Nn0.LHPEgGXLXDcWgQM3379htDPFTi_sL7lJIBRJk-P1EgM
+
+
+###
+GET http://localhost:3003/api/blogs/636b6b3734d4bd659fa10ffd
+
+###
+GET http://localhost:3003/api/users
+###
+GET http://localhost:3003/api/blogs
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFsZXgiLCJpZCI6IjYzNmE0M2I3YzU5Mzc0MWU0OGQ1OTMwNSIsImlhdCI6MTY2Nzk4OTEzOH0.mGTtWU_Q9YyQmJ8XYW2lj2UAB1fuTBxhSQC18d2bADA
