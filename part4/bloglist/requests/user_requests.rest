@@ -25,7 +25,7 @@ Content-Type: application/json
 
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFsZXgiLCJpZCI6IjYzNmE0M2I3YzU5Mzc0MWU0OGQ1OTMwNSIsImlhdCI6MTY2Nzk4Nzc0NH0.HzPv_JcFkfgWbYkSRZZROXFpYmKUBtbYtBIHPZZZV9k
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlBldGVyIiwiaWQiOiI2MzZjYmQ4MDQzMzE3N2RlOGNhYjJkNmMiLCJpYXQiOjE2NjgwNzA4MzR9.oNiQzMViAALaLM1cUlCZZ1vku0OVCTRHs9Ewe1vRx5s
 
 {
     "title": "Wow",
@@ -58,7 +58,7 @@ Content-Type: application/json
 
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFsZXgiLCJpZCI6IjYzNmE0M2I3YzU5Mzc0MWU0OGQ1OTMwNSIsImlhdCI6MTY2ODA2MjExNX0.lSMYKzoexAcNxj1qvDs0CwJbILCiM4mWaUResBduh28
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFsZXgiLCJpZCI6IjYzNmNiZDhjNDMzMTc3ZGU4Y2FiMmQ3MCIsImlhdCI6MTY2ODA3MDg2Mn0.SydvnOgAJO3L5RXH6zayF6gnfcqYTyfIYth87EhPbgQ
 Accept: application/json
 
 {
@@ -66,15 +66,14 @@ Accept: application/json
     "author": "Oscar",
     "url": "www.example.com",
     "likes": 5,
-    "user": "636a43b7c593741e48d59305"
+    "user": "636cbd8c433177de8cab2d70"
 }
 
 ###
-DELETE http://localhost:3003/api/blogs/636b797fc7ff6da1eeebfdd6
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IlBldGVyIiwiaWQiOiI2MzZhMzkyOThkYWQ3NDMzNjk3OGMxYzciLCJpYXQiOjE2NjgwNjUwNjN9.KIxNfRl9aUf2tq41m0UoM8sTGvtRNmbyrHfwdpXHwM0
-
+DELETE http://localhost:3003/api/blogs/636cbdfd5128ffe61ca566ff
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkFsZXgiLCJpZCI6IjYzNmNiZDhjNDMzMTc3ZGU4Y2FiMmQ3MCIsImlhdCI6MTY2ODA3MDg2Mn0.SydvnOgAJO3L5RXH6zayF6gnfcqYTyfIYth87EhPbgQ
 ###
-GET http://localhost:3003/api/blogs/636b6b3734d4bd659fa10ffd
+GET http://localhost:3003/api/blogs/
 
 ###
 GET http://localhost:3003/api/users
