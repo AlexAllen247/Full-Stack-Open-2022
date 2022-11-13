@@ -4,6 +4,7 @@ import blogService from "./services/blogs"
 import loginService from "./services/login"
 import Notification from "./components/Notification"
 import LoginForm from "./components/LoginForm"
+import BlogForm from "./components/BlogForm"
 
 const App = () => {
   const [blogs, setBlogs] = useState([])   
@@ -47,6 +48,16 @@ const App = () => {
     setUser(null)
   }
 
+  const handleCreateBlog = async (title, author, url) => {
+    try {
+      const blog = await blogService.create({title, author, url})
+      setBlogs(blogs.concat(blog))
+      setMessage(`A new blog ${title} by ${author} added`)
+    } catch (exception) {
+      setMessage("Error: Please fill all fields")
+    }
+  }
+
   return (
     <div>
       <h2>blogs</h2>
@@ -58,6 +69,7 @@ const App = () => {
           <p><span>{user.name} logged in</span>
           <button onClick={handleLogout}>logout</button>
           </p>
+          <BlogForm createBlog={handleCreateBlog} />
           {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
