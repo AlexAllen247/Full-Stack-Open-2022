@@ -3,9 +3,9 @@ import { addVote } from "../reducers/anecdoteReducer"
 import { showNotification, hideNotification } from "../reducers/notificationRedcuer"
 
 const AnecdoteList = () => {
+    const dispatch = useDispatch()
     const anecdotes = useSelector(state => state.anecdotes)
     const filter = useSelector(state => state.filter)
-    const dispatch = useDispatch()
 
     const handleVote = (id) => {
         dispatch(addVote(id))
