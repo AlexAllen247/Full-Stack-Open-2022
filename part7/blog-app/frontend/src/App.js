@@ -6,21 +6,21 @@ import NewBlogForm from "./components/NewBlogForm"
 import Notification from "./components/Notification"
 import Togglable from "./components/Togglable"
 import { setNotification } from "./reducers/notificationReducer"
-import blogService from "./services/blogs"
+import { initializeBlogs, createBlog, deleteBlog, likeBlog } from "./reducers/blogReducer"
 import loginService from "./services/login"
 import userService from "./services/user"
 
 const App = () => {
   const dispatch = useDispatch()
-  const [blogs, setBlogs] = useState([])
+  const blogs = useSelector(state => state.blogs)
   const [user, setUser] = useState(null)
   const notification = useSelector(state => state.notification)
   const blogFormRef = useRef()
   const byLikes = (b1, b2) => (b2.likes > b1.likes ? 1 : -1)
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs.sort(byLikes)))
-  }, [])
+    dispatch(initializeBlogs())
+  }, [dispatch])
 
   useEffect(() => {
     const userFromStorage = userService.getUser()
@@ -51,53 +51,29 @@ const App = () => {
     notify("good bye!")
   }
 
-  const createBlog = async (blog) => {
-    blogService
-      .create(blog)
-      .then((createdBlog) => {
-        notify(
-          `a new blog "${createdBlog.title}" by ${createdBlog.author} added`
-        )
-        setBlogs(blogs.concat(createdBlog))
-        blogFormRef.current.toggleVisibility()
-      })
-      .catch((error) => {
-        notify("creating a blog failed: " + error.response.data.error, "alert")
-      })
+  const addBlog = async (blog) => {
+    blogFormRef.current.toggleVisibility()
+    try {
+      dispatch(createBlog(blog))
+      notify(`a new blog "${blog.title}" by ${blog.author} added`)
+    } catch (error) {
+      notify("creating a blog failed: " + error.response.data.error, "alert")
+    }
   }
 
   const removeBlog = (id) => {
-    const toRemove = blogs.find((b) => b.id === id)
-
-    const ok = window.confirm(
-      `remove "${toRemove.title}" by ${toRemove.author}?`
-    )
-
-    if (!ok) {
-      return
-    }
-
-    blogService.remove(id).then(() => {
-      const updatedBlogs = blogs.filter((b) => b.id !== id).sort(byLikes)
-      setBlogs(updatedBlogs)
-    })
+    dispatch(deleteBlog(id))
+    window.confirm(`remove "${id.title}" by ${id.author}?`)
+    const updatedBlogs = blogs.filter((b) => b.id !== id).sort(byLikes)
+    initializeBlogs(updatedBlogs)
   }
 
-  const likeBlog = async (id) => {
-    const toLike = blogs.find((b) => b.id === id)
-    const liked = {
-      ...toLike,
-      likes: (toLike.likes || 0) + 1,
-      user: toLike.user.id,
-    }
-
-    blogService.update(liked.id, liked).then((updatedBlog) => {
-      notify(`you liked "${updatedBlog.title}" by ${updatedBlog.author}`)
-      const updatedBlogs = blogs
-        .map((b) => (b.id === id ? updatedBlog : b))
-        .sort(byLikes)
-      setBlogs(updatedBlogs)
-    })
+  const updateLikeBlog = (blog) => {
+    const updatedBlogObject = { ...blog, likes: blog.like + 1 }
+    dispatch(likeBlog(updatedBlogObject))
+    notify(`you liked "${updatedBlogObject.title}" by ${updatedBlogObject.author}`)
+    const updatedBlogs = blogs.map((b) => (b.id === updatedBlogObject ? updatedBlogObject : b)).sort(byLikes)
+    initializeBlogs(updatedBlogs)
   }
 
   const notify = (message, type = "info") => {
@@ -125,7 +101,7 @@ const App = () => {
       </div>
 
       <Togglable buttonLabel="new note" ref={blogFormRef}>
-        <NewBlogForm onCreate={createBlog} />
+        <NewBlogForm onCreate={addBlog} />
       </Togglable>
 
       <div id="blogs">
@@ -133,10 +109,9 @@ const App = () => {
           <Blog
             key={blog.id}
             blog={blog}
-            likeBlog={likeBlog}
+            likeBlog={updateLikeBlog}
             removeBlog={removeBlog}
-            user={user}
-          />
+            user={user}/>
         ))}
       </div>
     </div>
