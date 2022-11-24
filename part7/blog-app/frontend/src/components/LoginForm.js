@@ -1,42 +1,50 @@
 import { useState } from "react"
+import { useDispatch } from "react-redux"
+import { processLogin } from "../reducers/userReducer"
 
-const LoginForm = ({ onLogin }) => {
+const LoginForm = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
+  const dispatch = useDispatch()
 
-  const handleSubmit = (event) => {
+  const onSubmit = (event) => {
     event.preventDefault()
-    onLogin(username, password)
+    dispatch(processLogin(username, password))
+    setUsername("")
+    setPassword("")
   }
-
   return (
-    <div>
-      <h2>Log in to application</h2>
-
-      <form onSubmit={handleSubmit}>
-        <div>
-          username
+    <form onSubmit={onSubmit}>
+      <div>
+        <p>
+          username{" "}
           <input
-            value={username}
-            onChange={({ target }) => setUsername(target.value)}
             id="username"
+            type="text"
+            value={username}
+            name="Username"
+            onChange={({ target }) => setUsername(target.value)}
           />
-        </div>
-        <div>
-          password
+        </p>
+      </div>
+      <div>
+        <p>
+          password{" "}
           <input
+            id="password"
             type="password"
             value={password}
+            name="Password"
             onChange={({ target }) => setPassword(target.value)}
-            id="password"
           />
-        </div>
-        <button id="login-button" type="submit">
-          login
-        </button>
-      </form>
-    </div>
+        </p>
+      </div>
+      <button id="login-button" type="submit">
+        login
+      </button>
+    </form>
   )
 }
+
 
 export default LoginForm

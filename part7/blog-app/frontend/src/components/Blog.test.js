@@ -1,56 +1,47 @@
 import React from "react"
 import "@testing-library/jest-dom/extend-expect"
-import { render, screen } from "@testing-library/react"
-import userEvent from "@testing-library/user-event"
+import { render, screen, fireEvent } from "@testing-library/react"
 import Blog from "./Blog"
 
-describe("blog", () => {
-  let onLike = jest.fn()
-
+describe("<Blog />", () => {
+  let container
+  const mockHandler = jest.fn()
   beforeEach(() => {
     const blog = {
-      title: "Testing is easy",
-      author: "Kalle Ilves",
-      url: "http://lynx.fi/testing",
-      likes: 5,
+      title: "test title",
+      author: "test author",
+      url: "test url",
+      likes: 2,
+      user: "test user",
     }
-
-    render(<Blog blog={blog} likeBlog={onLike} removeBlog={() => {}} />)
+    container = render(<Blog blog={blog} updateLikes={mockHandler} />).container
   })
 
-  test("renders by default only title and author", () => {
-    const authorElement = screen.getByText("Kalle Ilves", { exact: false })
-    expect(authorElement).toBeDefined()
-
-    const titleElement = screen.getByText("Testing is easy", { exact: false })
-    expect(titleElement).toBeDefined()
-
-    const urlElement = screen.queryByText("http://lynx.fi/testing")
-    expect(urlElement).toBeNull()
-
-    const likesElement = screen.queryByText("likes 5")
-    expect(likesElement).toBeNull()
+  test("renders a view of a blog", () => {
+    const visible = container.querySelector(".blog-visible")
+    const invisible = container.querySelector(".blog-invisible")
+    expect(visible).not.toHaveStyle("display: none")
+    expect(invisible).toEqual(null)
   })
 
-  test("when expanded also url and like rendered", () => {
-    const showButton = screen.getByText("view")
-    userEvent.click(showButton)
+  test("renders blog details when show button is clicked", async () => {
+    const button = screen.getByText("show")
+    await fireEvent.click(button)
 
-    const urlElement = screen.getByText("http://lynx.fi/testing")
-    expect(urlElement).toBeDefined()
-
-    const likesElement = screen.getByText("5 likes")
-    expect(likesElement).toBeDefined()
+    const visible = container.querySelector(".blog-visible")
+    const invisible = container.querySelector(".blog-invisible")
+    expect(invisible).not.toHaveStyle("display: none")
+    expect(visible).not.toHaveStyle("display: none")
   })
 
-  test("when liked twice, handler is called twice", () => {
-    const showButton = screen.getByText("view")
-    userEvent.click(showButton)
+  test("when like button is clicked twice, event handler is also called twice", async () => {
+    const showButton = screen.getByText("show")
+    await fireEvent.click(showButton)
 
     const likeButton = screen.getByText("like")
-    userEvent.click(likeButton)
-    userEvent.click(likeButton)
+    await fireEvent.click(likeButton)
+    await fireEvent.click(likeButton)
 
-    expect(onLike.mock.calls).toHaveLength(2)
+    expect(mockHandler.mock.calls).toHaveLength(2)
   })
 })

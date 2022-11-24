@@ -1,32 +1,44 @@
 {
-  "name": "backend",
+  "name": "bloglist",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "cross-env NODE_ENV=production node index.js",
-    "dev": "cross-env NODE_ENV=development nodemon index.js",
-    "lint": "eslint .",
+    "dev": "cross-env NODE_ENV=production nodemon index.js",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand --forceExit",
+    "lint": "eslint .",
     "start:test": "cross-env NODE_ENV=test node index.js"
   },
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexAllen247/Full-Stack-Open-2022.git"
+  },
+  "author": "AlexAllen247",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlexAllen247/Full-Stack-Open-2022/issues"
+  },
+  "homepage": "https://github.com/AlexAllen247/Full-Stack-Open-2022#readme",
   "dependencies": {
-    "bcrypt": "^5.0.1",
+    "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
-    "dotenv": "^14.3.0",
-    "express": "^4.17.2",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.0.3",
+    "eslint": "^8.26.0",
+    "express": "^4.18.2",
     "express-async-errors": "^3.1.1",
-    "jest": "^27.4.7",
     "jsonwebtoken": "^8.5.1",
+    "lint": "^1.1.2",
     "lodash": "^4.17.21",
-    "mongoose": "^6.1.8"
+    "mongoose": "^6.7.1"
+  },
+  "jest": {
+    "testEnvironment": "node"
   },
   "devDependencies": {
-    "cross-env": "^7.0.3",
-    "nodemon": "^2.0.15",
-    "prettier": "2.7.1",
-    "supertest": "^6.2.2"
+    "jest": "^29.2.2",
+    "nodemon": "^2.0.20",
+    "supertest": "^6.3.1"
   }
 }

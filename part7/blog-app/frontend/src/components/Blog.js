@@ -1,69 +1,65 @@
 import { useState } from "react"
-import PropTypes from "prop-types"
+import { useDispatch } from "react-redux"
+import { likeBlog, deleteBlog } from "../reducers/blogReducer"
+import { setNotification } from "../reducers/notificationReducer"
 
-const BlogDetails = ({ blog, visible, likeBlog, removeBlog, own }) => {
-  if (!visible) return null
-
-  const addedBy = blog.user && blog.user.name ? blog.user.name : "anonymous"
-
-  return (
-    <div>
-      <div>
-        <a href={blog.url}>{blog.url}</a>
-      </div>
-      <div>
-        {blog.likes} likes{" "}
-        <button onClick={() => likeBlog(blog.id)}>like</button>
-      </div>
-      {addedBy}
-      {own && <button onClick={() => removeBlog(blog.id)}>remove</button>}
-    </div>
-  )
-}
-
-const Blog = ({ blog, likeBlog, removeBlog, user }) => {
+const Blog = ({ blog, username }) => {
   const [visible, setVisible] = useState(false)
+  const dispatch = useDispatch()
 
-  const style = {
-    padding: 3,
-    margin: 5,
-    borderStyle: "solid",
+  const toggleVisibility = () => {
+    setVisible(!visible)
+  }
+
+  const addLike = () => {
+    const updatedBlog = { ...blog, likes: blog.likes + 1 }
+    dispatch(likeBlog(updatedBlog))
+    dispatch(setNotification(`Liked ${updatedBlog}`, 3))
+  }
+
+  const removeBlog = () => {
+    if (window.confirm(`Delete ${blog.title} by ${blog.author}?`)) {
+      dispatch(deleteBlog(blog.id))
+        .then(() => {dispatch(setNotification("Blog deleted", 3))})
+        .catch(() => {dispatch(setNotification("Error", 3))})
+    }
+  }
+
+  const blogStyle = {
+    paddingTop: 10,
+    paddingLeft: 2,
+    border: "solid",
     borderWidth: 1,
+    marginBottom: 5,
   }
 
   return (
-    <div style={style} className="blog">
-      {blog.title} {blog.author}
-      <button onClick={() => setVisible(!visible)}>
-        {visible ? "hide" : "view"}
-      </button>
-      <BlogDetails
-        blog={blog}
-        visible={visible}
-        likeBlog={likeBlog}
-        removeBlog={removeBlog}
-        own={blog.user && user.username === blog.user.username}
-      />
+    <div style={blogStyle}>
+      <div className="blog-visible">
+        <span>{blog.title}</span> - <span>{blog.author}</span>{" "}
+        <button onClick={toggleVisibility}>{visible ? "hide" : "show"}</button>
+      </div>
+      {visible && (
+        <div className="blog-invisible">
+          <div>{blog.url}</div>
+          <div>
+            <p>
+              Likes: {blog.likes}{" "}
+              <button id="like-button" onClick={addLike}>
+                like
+              </button>{" "}
+            </p>
+          </div>
+          <div>{blog.user.name}</div>
+          {blog.user.username === username && (
+            <button id="delete-button" onClick={removeBlog}>
+              remove
+            </button>
+          )}
+        </div>
+      )}
     </div>
   )
-}
-
-Blog.propTypes = {
-  blog: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    author: PropTypes.string.isRequired,
-    url: PropTypes.string.isRequired,
-    likes: PropTypes.number.isRequired,
-    user: PropTypes.shape({
-      username: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-    }),
-  }).isRequired,
-  user: PropTypes.shape({
-    username: PropTypes.string.isRequired,
-  }),
-  likeBlog: PropTypes.func.isRequired,
-  removeBlog: PropTypes.func.isRequired,
 }
 
 export default Blog
