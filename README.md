@@ -12,3 +12,7 @@ This is a repository for all the exercises in FullStackOpen course
 [Exercises from Part 4](https://github.com/AlexAllen247/Full-Stack-Open-2022/tree/main/part4/bloglist)
 
 [Exercises from Part 5](https://github.com/AlexAllen247/Full-Stack-Open-2022/tree/main/part5/bloglist-frontend)
+
+[Exercises from Part 6](https://github.com/AlexAllen247/Full-Stack-Open-2022/tree/main/part6)
+
+[Exercises from Part 5](https://github.com/AlexAllen247/Full-Stack-Open-2022/tree/main/part7)
