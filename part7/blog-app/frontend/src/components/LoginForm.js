@@ -1,50 +1,51 @@
-import { useState } from "react"
-import { useDispatch } from "react-redux"
-import { processLogin } from "../reducers/userReducer"
+import PropTypes from "prop-types"
+import { Form, Button } from "react-bootstrap"
 
-const LoginForm = () => {
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
-  const dispatch = useDispatch()
-
-  const onSubmit = (event) => {
-    event.preventDefault()
-    dispatch(processLogin(username, password))
-    setUsername("")
-    setPassword("")
+const LoginForm = ({
+  handleLogin,
+  username,
+  setUsername,
+  password,
+  setPassword,
+}) => {
+  const margin = {
+    margin: "10px 0",
   }
   return (
-    <form onSubmit={onSubmit}>
-      <div>
-        <p>
-          username{" "}
-          <input
-            id="username"
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
-        </p>
-      </div>
-      <div>
-        <p>
-          password{" "}
-          <input
-            id="password"
-            type="password"
-            value={password}
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </p>
-      </div>
-      <button id="login-button" type="submit">
+    <Form onSubmit={handleLogin}>
+      <Form.Group>
+        <Form.Label>username:</Form.Label>
+        <Form.Control
+          id="username"
+          type="text"
+          value={username}
+          name="Username"
+          onChange={({ target }) => setUsername(target.value)}
+        />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label>password:</Form.Label>
+        <Form.Control
+          id="password"
+          type="password"
+          value={password}
+          name="Password"
+          onChange={({ target }) => setPassword(target.value)}
+        />
+      </Form.Group>
+      <Button style={margin} id="login-Button" type="submit">
         login
-      </button>
-    </form>
+      </Button>
+    </Form>
   )
 }
 
+LoginForm.propTypes = {
+  handleLogin: PropTypes.func.isRequired,
+  setUsername: PropTypes.func.isRequired,
+  setPassword: PropTypes.func.isRequired,
+  username: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired,
+}
 
 export default LoginForm
