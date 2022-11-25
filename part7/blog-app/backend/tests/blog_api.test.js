@@ -15,9 +15,11 @@ beforeEach(async () => {
 })
 
 describe("Testing GET requests", () => {
-
   test("blogs are returned as json", async () => {
-    await api.get("/api/blogs").expect(200).expect("Content-Type", /application\/json/)
+    await api
+      .get("/api/blogs")
+      .expect(200)
+      .expect("Content-Type", /application\/json/)
   })
 
   test("all blogs have id instead of _id", async () => {
@@ -37,21 +39,25 @@ describe("Testing POST requests", () => {
     return (token = jwt.sign(userToken, config.SECRET))
   })
 
-
   test("a valid blog can be added", async () => {
     const newBlog = {
       title: "Cool",
       author: "Paul",
       url: "www.example.com",
-      likes: 2
+      likes: 2,
     }
 
-    await api.post("/api/blogs").set("Authorization", `bearer ${token}`).send(newBlog).expect(201).expect("Content-Type", /application\/json/)
+    await api
+      .post("/api/blogs")
+      .set("Authorization", `bearer ${token}`)
+      .send(newBlog)
+      .expect(201)
+      .expect("Content-Type", /application\/json/)
 
     const blogsAtEnd = await helper.blogsInDb()
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
 
-    const titles = blogsAtEnd.map(b => b.title)
+    const titles = blogsAtEnd.map((b) => b.title)
     expect(titles).toContain("Cool")
   })
 
@@ -59,24 +65,33 @@ describe("Testing POST requests", () => {
     const newBlog = {
       title: "Maybe",
       author: "Peter",
-      url: "www.example.com"
+      url: "www.example.com",
     }
 
-    await api.post("/api/blogs").send(newBlog).set("Authorization", `bearer ${token}`).expect(201).expect("Content-Type", /application\/json/)
+    await api
+      .post("/api/blogs")
+      .send(newBlog)
+      .set("Authorization", `bearer ${token}`)
+      .expect(201)
+      .expect("Content-Type", /application\/json/)
 
     const blogsAtEnd = await helper.blogsInDb()
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
 
-    const likes = blogsAtEnd.map(b => b.likes)
+    const likes = blogsAtEnd.map((b) => b.likes)
     expect(likes).toContain(0)
   })
 
   test("if url or title is missing 400 error displayed", async () => {
     const newBlog = {
-      author: "Dom"
+      author: "Dom",
     }
 
-    await api.post("/api/blogs").set("Authorization", `bearer ${token}`).send(newBlog).expect(400)
+    await api
+      .post("/api/blogs")
+      .set("Authorization", `bearer ${token}`)
+      .send(newBlog)
+      .expect(400)
     const blogsAtEnd = await helper.blogsInDb()
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
   })
@@ -87,7 +102,11 @@ describe("Testing DELETE method", () => {
     await User.deleteMany({})
 
     const passwordHash = await bcrypt.hash("98765", 10)
-    const user = await new User({ username: "test", name: "Test", passwordHash }).save()
+    const user = await new User({
+      username: "test",
+      name: "Test",
+      passwordHash,
+    }).save()
     await Blog.deleteMany({})
 
     for (let blog of helper.initialBlogs) {
@@ -102,10 +121,13 @@ describe("Testing DELETE method", () => {
   const loginToken = async () => {
     const userLoginDetails = {
       username: "test",
-      password: "98765"
+      password: "98765",
     }
 
-    const login = await api.post("/api/login").send(userLoginDetails).expect(200)
+    const login = await api
+      .post("/api/login")
+      .send(userLoginDetails)
+      .expect(200)
     const token = login.body.token
     expect(token).not.toBe(null)
     return token
@@ -115,15 +137,20 @@ describe("Testing DELETE method", () => {
     const token = await loginToken()
     const blogsAtStart = await helper.blogsInDb()
     const blogToDelete = blogsAtStart[0]
-    const userBlogsAtStart = (await helper.usersInDb()).find(user => user.username === "test").blogs.map(blog => blog._id.toString())
+    const userBlogsAtStart = (await helper.usersInDb())
+      .find((user) => user.username === "test")
+      .blogs.map((blog) => blog._id.toString())
     expect(userBlogsAtStart).toContain(blogToDelete.id)
 
-    await api.delete(`/api/blogs/${blogToDelete.id}`).set("Authorization", `bearer ${token}`).expect(204)
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .set("Authorization", `bearer ${token}`)
+      .expect(204)
 
     const blogsAtEnd = await helper.blogsInDb()
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
 
-    const titles = blogsAtEnd.map(b => b.title)
+    const titles = blogsAtEnd.map((b) => b.title)
     expect(titles).not.toContain(blogToDelete.title)
   })
 
@@ -131,10 +158,15 @@ describe("Testing DELETE method", () => {
     const token = null
     const blogsAtStart = await helper.blogsInDb()
     const blogToDelete = blogsAtStart[0]
-    const userBlogsAtStart = (await helper.usersInDb()).find(user => user.username === "test").blogs.map(blog => blog._id.toString())
+    const userBlogsAtStart = (await helper.usersInDb())
+      .find((user) => user.username === "test")
+      .blogs.map((blog) => blog._id.toString())
     expect(userBlogsAtStart).toContain(blogToDelete.id)
 
-    await api.delete(`/api/blogs/${blogToDelete.id}`).set("Authorization", `bearer ${token}`).expect(401)
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .set("Authorization", `bearer ${token}`)
+      .expect(401)
 
     const blogsAtEnd = await helper.blogsInDb()
     expect(blogsAtEnd).toHaveLength(blogsAtStart.length)
@@ -150,7 +182,6 @@ describe("Testing PUT method", () => {
     const updatedBlog = blogsAtEnd[0]
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
     expect(updatedBlog.likes).toBe(7)
-
   })
 })
 

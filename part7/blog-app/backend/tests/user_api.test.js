@@ -34,20 +34,20 @@ describe("when there is initially one user in db", () => {
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length + 1)
 
-    const usernames = usersAtEnd.map(u => u.username)
+    const usernames = usersAtEnd.map((u) => u.username)
     expect(usernames).toContain(newUser.username)
   })
 })
 
 describe("Invalid usernames or passwords", () => {
-    beforeEach(async () => {
-      await User.deleteMany({})
-  
-      const passwordHash = await bcrypt.hash("secret", 10)
-      const user = new User({ username: "root", passwordHash })
-  
-      await user.save()
-    })
+  beforeEach(async () => {
+    await User.deleteMany({})
+
+    const passwordHash = await bcrypt.hash("secret", 10)
+    const user = new User({ username: "root", passwordHash })
+
+    await user.save()
+  })
 
   test("create invalid user, username too short", async () => {
     const usersAtStart = await helper.usersInDb()
@@ -67,7 +67,7 @@ describe("Invalid usernames or passwords", () => {
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length)
 
-    const usernames = usersAtEnd.map(u => u.username)
+    const usernames = usersAtEnd.map((u) => u.username)
     expect(usernames).not.toContain(newUser.username)
   })
 
@@ -89,7 +89,7 @@ describe("Invalid usernames or passwords", () => {
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length)
 
-    const passwords = usersAtEnd.map(u => u.password)
+    const passwords = usersAtEnd.map((u) => u.password)
     expect(passwords).not.toContain(newUser.password)
   })
 
@@ -110,7 +110,7 @@ describe("Invalid usernames or passwords", () => {
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length)
 
-    const usernames = usersAtEnd.map(u => u.username)
+    const usernames = usersAtEnd.map((u) => u.username)
     expect(usernames).not.toContain(newUser.usernames)
   })
 
@@ -131,12 +131,11 @@ describe("Invalid usernames or passwords", () => {
     const usersAtEnd = await helper.usersInDb()
     expect(usersAtEnd).toHaveLength(usersAtStart.length)
 
-    const usernames = usersAtEnd.map(u => u.username)
+    const usernames = usersAtEnd.map((u) => u.username)
     expect(usernames).not.toContain(newUser.usernames)
   })
-
 })
 
 afterAll(() => {
-    mongoose.connection.close()
-  })
+  mongoose.connection.close()
+})
